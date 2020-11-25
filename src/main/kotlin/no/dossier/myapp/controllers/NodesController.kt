@@ -18,14 +18,14 @@ class NodesController(
   private val nodes = mutableSetOf<Node>()
 
   @GetMapping("/nodes")
-  fun getNodes(): List<String> = nodes.map { it.url }
+  fun getNodes(): Set<String> = nodes.map { it.url }.toSet()
 
-  @PostMapping("/notify")
+  @PostMapping("/nodes", "/notify")
   fun postNotify(@RequestBody body: NotifyBody): ResponseEntity<out Any> {
     val node = Node(url = body.url)
     val response = restTemplate.getForEntity<Health>(node.url + "/health")
     if (!response.statusCode.is2xxSuccessful) {
-      return ErrorWrapper.genericBadRequest("Got response from node, but status was not 2xx").toResponseEntity()
+      return RestError.badRequest("Got response from node, but status was not 2xx").toResponseEntity()
     }
     nodes.add(node)
     return ResponseEntity.ok(node)
@@ -33,16 +33,16 @@ class NodesController(
 
   class NotifyBody(val url: String)
   class Health()
-  class ErrorWrapper(
+  class RestError(
       val tag: String,
       val message: String,
       val status: Int
   ) {
-    fun toResponseEntity(): ResponseEntity<ErrorWrapper> =
+    fun toResponseEntity(): ResponseEntity<RestError> =
         ResponseEntity(this, HttpStatus.valueOf(status))
 
     companion object {
-      fun genericBadRequest(message: String) = ErrorWrapper(
+      fun badRequest(message: String) = RestError(
           tag = "BAD_REQUEST",
           message = message,
           status = 400
