@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 class JokeController {
 
   private val jokes = setOf(
-      Joke("Dette er en vits...")
+      Joke("Why do Java developers wear glasses? Because they cannot C#")
   )
 
   @GetMapping("/joke")
