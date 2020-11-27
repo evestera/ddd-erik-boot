@@ -1,3 +1,3 @@
-rootProject.name = "myapp"
+rootProject.name = "ddd-erik-boot"
 
 include("frontend")
