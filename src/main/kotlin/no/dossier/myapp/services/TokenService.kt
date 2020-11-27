@@ -17,12 +17,7 @@ import java.util.*
 @Service
 class TokenService {
 
-  companion object {
-    val TOKEN_KEY_ID = Random().nextInt().toString()
-  }
-
-  private val tokenKid: String
-    get() = TOKEN_KEY_ID
+  val tokenKeyId = Random().nextInt().toString()
 
   private val tokenPublicKey: RSAPublicKey
   private val tokenPrivateKey: RSAPrivateKey
@@ -36,12 +31,12 @@ class TokenService {
   }
 
   private val signingKeyProvider = object : RSAKeyProvider {
-    override fun getPrivateKeyId(): String? = TOKEN_KEY_ID
+    override fun getPrivateKeyId(): String = tokenKeyId
 
     override fun getPrivateKey(): RSAPrivateKey = tokenPrivateKey
 
     override fun getPublicKeyById(keyId: String?): RSAPublicKey {
-      if (keyId == TOKEN_KEY_ID) {
+      if (keyId == tokenKeyId) {
         return tokenPublicKey
       }
       throw SigningKeyNotFoundException("No key with ID $keyId found", null)
@@ -61,14 +56,13 @@ class TokenService {
 
   fun getJwks(): Jwks {
     val publicKey = tokenPublicKey
-    val kid = tokenKid
     return Jwks(
         keys = listOf(
             Jwk(
                 alg = "RS256",
                 kty = publicKey.algorithm,
                 use = "sig",
-                kid = kid,
+                kid = tokenKeyId,
                 e = Base64.getUrlEncoder().encodeToString(publicKey.publicExponent.toByteArray()),
                 n = Base64.getUrlEncoder().encodeToString(publicKey.modulus.toByteArray()),
                 x5c = null,

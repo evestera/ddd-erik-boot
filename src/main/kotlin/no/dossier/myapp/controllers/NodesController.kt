@@ -1,6 +1,5 @@
 package no.dossier.myapp.controllers
 
-import no.dossier.myapp.domain.Health
 import no.dossier.myapp.domain.Node
 import no.dossier.myapp.services.NodeService
 import org.springframework.http.HttpStatus

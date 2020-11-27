@@ -10,12 +10,16 @@ class MetadataController {
   fun getMetadata() = mapOf(
       "name" to "Eriks Spring Boot node",
       "services" to listOf(
-          "health",
-          "joke",
-          "metadata",
-          "secure/ping",
-          "widgets",
-          "nodes"
-      ).sorted()
+          "/health",
+          "/joke",
+          "/metadata",
+          "/nodes",
+          "/secure/ping",
+          "/secure/pong",
+          "/trigger/secure/ping",
+          "/.well-known/jwks.json",
+          "/widgets",
+      )
   )
+
 }
