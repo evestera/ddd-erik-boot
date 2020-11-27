@@ -13,7 +13,9 @@ class MetadataController {
           "health",
           "joke",
           "metadata",
+          "secure/ping",
+          "widgets",
           "nodes"
-      )
+      ).sorted()
   )
 }
