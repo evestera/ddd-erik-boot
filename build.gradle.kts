@@ -22,6 +22,9 @@ dependencies {
   implementation("org.postgresql:postgresql")
   implementation("org.flywaydb:flyway-core")
 
+  implementation("com.auth0:java-jwt:3.9.0")
+  implementation("com.auth0:jwks-rsa:0.9.0")
+
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
