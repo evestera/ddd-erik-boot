@@ -19,8 +19,14 @@ class NodesController(
       nodeService.getNodes().map { it.url }.toSet()
 
   @PostMapping("/nodes", "/notify")
-  fun postNotify(@RequestBody body: NotifyBody) {
-    nodeService.addNode(Node(url = body.url))
+  fun postNodes(@RequestBody body: NotifyBody): ResponseEntity<String> {
+    val url = body.url
+    val added = nodeService.addNode(Node(url = url))
+    return if (added) {
+      ResponseEntity.ok("OK: Node with url [$url] registered")
+    } else {
+      ResponseEntity.badRequest().body("Bad request: Node with url [$url] not registered. Health check failed.")
+    }
   }
 
   class NotifyBody(val url: String)

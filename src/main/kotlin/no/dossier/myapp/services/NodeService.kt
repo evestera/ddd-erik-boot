@@ -29,9 +29,12 @@ class NodeService(
     }
   }
 
-  fun addNode(node: Node) {
-    if (isHealthy(node)) {
+  fun addNode(node: Node): Boolean {
+    return if (isHealthy(node)) {
       nodeRepository.addNode(node)
+      true
+    } else {
+      false
     }
   }
 

@@ -9,6 +9,7 @@ class MetadataController {
   @GetMapping("/metadata")
   fun getMetadata() = mapOf(
       "name" to "Eriks Spring Boot node",
+      "owner" to "Erik Vesteraas",
       "services" to listOf(
           "/health",
           "/joke",
