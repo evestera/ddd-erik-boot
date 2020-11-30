@@ -17,8 +17,7 @@ import java.util.*
 @Service
 class TokenService {
 
-  val tokenKeyId = Random().nextInt().toString()
-
+  private val tokenKeyId = UUID.randomUUID().toString()
   private val tokenPublicKey: RSAPublicKey
   private val tokenPrivateKey: RSAPrivateKey
 
@@ -45,12 +44,13 @@ class TokenService {
 
   private val signingAlgorithm = Algorithm.RSA256(signingKeyProvider)
 
-  fun getToken(fromUrl: String, toUrl: String): String {
+  fun getToken(selfUrl: String, targetUrl: String): String {
     return JWT.create()
-        .withIssuer(fromUrl)
-        .withAudience(toUrl)
+        .withIssuer(selfUrl)
+        .withSubject(selfUrl)
+        .withAudience(targetUrl)
         .withIssuedAt(Date.from(Instant.now()))
-        .withExpiresAt(Date.from(Instant.now().plusSeconds(3600)))
+        .withExpiresAt(Date.from(Instant.now().plusSeconds(30)))
         .sign(signingAlgorithm)
   }
 
@@ -87,6 +87,7 @@ class TokenService {
 
     return JWT.require(Algorithm.RSA256(PublicKeyFromJwksProvider("$issuer/.well-known/jwks.json")))
         .withIssuer(issuer)
+        .withSubject(issuer)
         .withAudience(selfUrl)
         .build()
         .verify(jwsString)
