@@ -10,6 +10,7 @@ node {
 tasks.getByName("yarn_build") {
   dependsOn("yarn_install")
   inputs.dir("src")
+  inputs.dir("public")
   inputs.files("package.json", "yarn.lock")
   outputs.dir("build")
   outputs.cacheIf { true }

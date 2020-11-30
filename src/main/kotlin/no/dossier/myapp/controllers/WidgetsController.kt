@@ -17,6 +17,12 @@ class WidgetsController(
           description = "A widget that just renders the message 'Hello World'",
           selector = ".widget-erik-boot-hello-world",
           script = "${server.url}/widget-hello-world.js"
+      ),
+      Widget(
+          name = "Nodes List",
+          description = "A widget that fetches and lists /nodes on the application it is rendered in",
+          selector = ".widget-erik-boot-own-nodes",
+          script = "${server.url}/widget-own-nodes.js"
       )
   )
 
