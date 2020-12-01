@@ -7,11 +7,15 @@
         useEffect(() => {
           fetch("/nodes").then(res => res.json()).then(res => {
             setNodes(res);
-          });
+          }).catch(err => ({ error: err }));
         }, []);
 
         if (!nodes) {
           return html`<p>Loading nodes...</p>`;
+        }
+
+        if (nodes.error) {
+          return html`<p>Error loading nodes: ${nodes.error}</p>`;
         }
 
         if (nodes.length === 0) {

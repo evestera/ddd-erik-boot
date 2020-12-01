@@ -7,11 +7,15 @@
         useEffect(() => {
           fetch("/metadata").then(res => res.json()).then(res => {
             setMetadata(res);
-          });
+          }).catch(err => ({ error: err }));
         }, []);
 
         if (!metadata) {
           return html`<p>Loading metadata...</p>`;
+        }
+
+        if (metadata.error) {
+          return html`<p>Error loading metadata: ${metadata.error}</p>`;
         }
 
         return html`
