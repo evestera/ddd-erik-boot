@@ -21,6 +21,8 @@ class MetadataController {
           "/trigger/secure/ping",
           "/.well-known/jwks.json",
           "/widgets",
+          "/secure/persist/nodes/sync",
+          "/secure/persist/nodes/unregister",
       )
   )
 

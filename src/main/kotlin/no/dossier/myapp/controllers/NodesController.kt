@@ -1,6 +1,7 @@
 package no.dossier.myapp.controllers
 
 import no.dossier.myapp.domain.Node
+import no.dossier.myapp.domain.UrlObject
 import no.dossier.myapp.services.NodeService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -19,7 +20,7 @@ class NodesController(
       nodeService.getNodes().map { it.url }.toSet()
 
   @PostMapping("/nodes", "/notify")
-  fun postNodes(@RequestBody body: NotifyBody): ResponseEntity<String> {
+  fun postNodes(@RequestBody body: UrlObject): ResponseEntity<String> {
     val url = body.url
     val added = nodeService.addNode(Node(url = url))
     return if (added) {
@@ -29,7 +30,6 @@ class NodesController(
     }
   }
 
-  class NotifyBody(val url: String)
   class RestError(
       val tag: String,
       val message: String,
