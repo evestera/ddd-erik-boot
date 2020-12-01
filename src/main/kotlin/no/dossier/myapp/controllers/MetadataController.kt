@@ -10,6 +10,7 @@ class MetadataController {
   fun getMetadata() = mapOf(
       "name" to "Eriks Spring Boot node",
       "owner" to "Erik Vesteraas",
+      "description" to "Node written in Kotlin using Spring Boot 2 and deployed on Heroku",
       "services" to listOf(
           "/health",
           "/joke",

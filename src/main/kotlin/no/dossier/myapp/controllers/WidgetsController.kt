@@ -23,6 +23,12 @@ class WidgetsController(
           description = "A widget that fetches and lists /nodes on the application it is rendered in",
           selector = ".widget-erik-boot-own-nodes",
           script = "${server.url}/widget-own-nodes.js"
+      ),
+      Widget(
+          name = "Describe Self",
+          description = "A widget that fetches and shows /metadata for the application it is rendered in",
+          selector = ".widget-erik-boot-describe-self",
+          script = "${server.url}/widget-describe-self.js"
       )
   )
 
