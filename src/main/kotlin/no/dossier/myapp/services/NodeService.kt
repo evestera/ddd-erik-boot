@@ -19,7 +19,7 @@ class NodeService(
     return nodeRepository.getNodes().filter { it.state != NodeState.DOWN }.toSet()
   }
 
-  @Scheduled(fixedDelayString = "PT10S")
+  @Scheduled(fixedDelayString = "PT1M")
   fun updateNodes() {
     getNodes().forEach {
       val newState = it.state.newState(isHealthy(it))

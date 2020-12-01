@@ -39,4 +39,13 @@ class PersistedNodesRepository(
     return jdbcTemplate.query("select client from persisted_nodes") { rs, _ -> rs.getString("client") }
   }
 
+  fun register(clientUrl: String) {
+    val nodesString = objectMapper.writeValueAsString(emptySet<String>())
+    jdbcTemplate.update(
+        "insert into persisted_nodes (client, nodes) values (?, ?) on conflict (client) do nothing",
+        clientUrl,
+        nodesString
+    )
+  }
+
 }
