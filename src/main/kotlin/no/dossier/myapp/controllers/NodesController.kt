@@ -3,6 +3,7 @@ package no.dossier.myapp.controllers
 import no.dossier.myapp.domain.Node
 import no.dossier.myapp.domain.UrlObject
 import no.dossier.myapp.services.NodeService
+import no.dossier.myapp.services.normalizeUrl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,7 +22,7 @@ class NodesController(
 
   @PostMapping("/nodes", "/notify")
   fun postNodes(@RequestBody body: UrlObject): ResponseEntity<String> {
-    val url = body.url
+    val url = normalizeUrl(body.url)
     val added = nodeService.addNode(Node(url = url))
     return if (added) {
       ResponseEntity.ok("OK: Node with url [$url] registered")

@@ -85,7 +85,7 @@ class TokenService {
   fun validateToken(jwsString: String, selfUrl: String): DecodedJWT {
     val issuer = JWT.decode(jwsString).issuer
 
-    return JWT.require(Algorithm.RSA256(PublicKeyFromJwksProvider("$issuer/.well-known/jwks.json")))
+    return JWT.require(Algorithm.RSA256(PublicKeyFromJwksProvider("${normalizeUrl(issuer)}/.well-known/jwks.json")))
         .withIssuer(issuer)
         .withSubject(issuer)
         .withAudience(selfUrl)

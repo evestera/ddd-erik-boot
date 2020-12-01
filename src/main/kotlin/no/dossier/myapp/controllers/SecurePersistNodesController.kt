@@ -5,6 +5,7 @@ import no.dossier.myapp.data.PersistedNodesRepository
 import no.dossier.myapp.domain.UrlObject
 import no.dossier.myapp.services.TokenService
 import no.dossier.myapp.services.extractBearerAuth
+import no.dossier.myapp.services.normalizeUrl
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
@@ -25,13 +26,15 @@ class SecurePersistNodesController(
   @PostMapping("/unregister")
   fun persistNodesUnregister(request: HttpServletRequest) {
     val token = tokenService.validateToken(request.extractBearerAuth(), server.url)
-    persistedNodesRepository.deletePersistedNodes(token.issuer)
+    val clientUrl = normalizeUrl(token.issuer)
+    persistedNodesRepository.deletePersistedNodes(clientUrl)
   }
 
   @PostMapping("/sync", "/register")
   fun persistNodesForceSync(request: HttpServletRequest) {
     val token = tokenService.validateToken(request.extractBearerAuth(), server.url)
-    syncNodes(token.issuer)
+    val clientUrl = normalizeUrl(token.issuer)
+    syncNodes(clientUrl)
   }
 
   @Scheduled(fixedRateString = "PT10M")
