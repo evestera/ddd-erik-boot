@@ -8,13 +8,41 @@ function App() {
           <h1>Eriks Spring Boot node</h1>
         </header>
         <main>
-          <section>
+          <article>
+            <p>
+              This app provides some useful services for creating minimal nodes:
+            </p>
+            <ul>
+              <li><a href="#widgets">Widgets</a>, if you don't want to bother with a frontend yourself.</li>
+              <li><a href="#persistence">Persistence-of-nodes-as-a-service</a> if you want persistence, but don't want to set up a database.</li>
+            </ul>
+          </article>
+          <hr/>
+          <article>
             <header>
-              <h2>Widgets</h2>
+              <h2 id="widgets">Widgets</h2>
             </header>
             <Widgets/>
-          </section>
+          </article>
+          <article>
+            <h2 id="persistence">Persistence of nodes (as a service)</h2>
+            <p>
+              Make a secure <code>POST</code> request to <code>/secure/persist/nodes/sync</code> when your app
+              starts and this app will let call <code>POST /nodes</code> for any nodes your app has forgotten.
+              It will automatically check your app every 10 minutes to see if your app has learned of any new
+              nodes.
+            </p>
+
+            <p>
+              Make a secure <code>POST</code> request to <code>/secure/persist/nodes/unregister</code> to stop
+              this syncing.
+            </p>
+          </article>
         </main>
+        <hr />
+        <footer>
+          <p><small>This is a footer. I guess I should have some stuff here?</small></p>
+        </footer>
       </>
   );
 }
@@ -44,7 +72,7 @@ function Widgets(): React.ReactElement {
 
   return (
       <>
-        {widgets.map(widget => <WidgetPreview widget={widget}/>)}
+        {widgets.map(widget => <WidgetPreview widget={widget} key={widget.script}/>)}
       </>
   );
 }
@@ -61,17 +89,20 @@ function WidgetPreview({widget}: { widget: Widget }): React.ReactElement {
     return () => {
       document.body.removeChild(script);
     }
-  }, []);
+  }, [widget.script]);
 
   return (
-      <aside>
-        <h3>{widget.name || widget.selector}</h3>
-        <p>{widget.description || "No description"}</p>
-        <p>Selector: <code>{widget.selector}</code></p>
-        <p>Script URL: <code>{widget.script}</code></p>
-        <h4>Preview:</h4>
-        <div className={widget.selector.replace(".", "")}/>
-      </aside>
+      <>
+        <article>
+          <h3>{widget.name || widget.selector}</h3>
+          <p>{widget.description || "No description"}</p>
+          <p>Selector: <code>{widget.selector}</code></p>
+          <p>Script URL: <code>{widget.script}</code></p>
+          <h4>Preview:</h4>
+          <div className={widget.selector.replace(".", "")}/>
+        </article>
+        <hr/>
+      </>
   );
 }
 
