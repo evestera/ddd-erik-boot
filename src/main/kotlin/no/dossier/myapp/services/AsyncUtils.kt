@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
+import java.util.function.Supplier
 
 internal class DelegatingMdcContextExecutor(private val delegate: Executor) :
     Executor {
@@ -87,7 +88,7 @@ private val defaultContext = AsyncContext()
  * ```
  */
 fun <V> async(context: AsyncContext = defaultContext, operation: () -> V): Future<V> =
-    CompletableFuture.supplyAsync({ operation() }, context.executor)
+    CompletableFuture.supplyAsync(Supplier { operation() }, context.executor)
 
 fun <T, V> Iterable<T>.mapAsync(context: AsyncContext = defaultContext, operation: (T) -> V): List<Future<V>> =
 // Kotlin Iterable.map is eager, so all tasks are submitted at once

@@ -48,7 +48,11 @@ class SecurePersistNodesController(
   fun scheduledSyncNodes() {
     logger.info("Starting scheduled task [sync nodes]")
     for (clientUrl in persistedNodesRepository.getAllClients()) {
-      syncNodes(clientUrl)
+      try {
+        syncNodes(clientUrl)
+      } catch (e: Exception) {
+        logger.info("[sync nodes] Error when syncing nodes to [$clientUrl]: ${e.message}")
+      }
     }
   }
 
@@ -60,9 +64,9 @@ class SecurePersistNodesController(
         HttpEntity.EMPTY,
         object : ParameterizedTypeReference<List<String>>() {}
     )
-    val currentNodes = nodesResponse.body!!.toSet()
+    val currentNodes = nodesResponse.body!!.map { normalizeUrl(it) }.toSet()
     val persistedNodes = persistedNodesRepository.getPersistedNodes(clientUrl)
-    val union = currentNodes.union(persistedNodes)
+    val union = currentNodes.union(persistedNodes).map { normalizeUrl(it) }.toSet()
     val forgottenNodeUrls = persistedNodes.minus(currentNodes)
     logger.info("[sync nodes][$clientUrl] Forgotten URLs: ${forgottenNodeUrls.size} New URLs: ${union.size - persistedNodes.size}")
 
