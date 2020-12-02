@@ -68,7 +68,10 @@ class SecurePersistNodesController(
     val persistedNodes = persistedNodesRepository.getPersistedNodes(clientUrl)
     val union = currentNodes.union(persistedNodes).map { normalizeUrl(it) }.toSet()
     val forgottenNodeUrls = persistedNodes.minus(currentNodes)
-    logger.info("[sync nodes][$clientUrl] Forgotten URLs: ${forgottenNodeUrls.size} New URLs: ${union.size - persistedNodes.size}")
+    logger.info(
+        "[sync nodes][$clientUrl] Union: ${union.size} Forgotten URLs: ${forgottenNodeUrls.size} " +
+        "New URLs: ${union.size - persistedNodes.size}"
+    )
 
     if (union != persistedNodes) {
       persistedNodesRepository.putPersistedNodes(clientUrl, union)
