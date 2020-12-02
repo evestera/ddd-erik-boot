@@ -5,7 +5,7 @@ function App() {
   return (
       <>
         <header>
-          <h1>Eriks Spring Boot node</h1>
+          <h1>Eriks Spring Boot node <img src="/profile.png" width="48" /></h1>
         </header>
         <main>
           <article>
