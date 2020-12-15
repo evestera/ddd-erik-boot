@@ -16,6 +16,7 @@ class MetadataController {
           "/joke",
           "/metadata",
           "/nodes",
+          "/secure/hello",
           "/secure/ping",
           "/secure/pong",
           "/trigger/secure/ping",
